@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayAdapter<String> adapter;
+
    private  ArrayList<String> messages=new ArrayList<String>();
 
     @Override
@@ -40,19 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         //READING DATABASE
 
-        adapter=new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                messages);
-        ListView currentMessages = (ListView) findViewById(R.id.messages_view);
-        currentMessages.setAdapter(adapter);
+
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("FISH:" + dataSnapshot.child("messages").getChildrenCount());
                 for(DataSnapshot s: dataSnapshot.child("messages").getChildren()){
                     messages.add(s.child("name").getValue().toString()+ ": " + s.child("message").getValue().toString());
-                    adapter.notifyDataSetChanged();
+                    updateView();
                 }
             }
 
@@ -66,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
         database.addValueEventListener(postListener);
 
         //END OF DATABASE READING
+    }
+
+    private void updateView() {
+        TextView t = (TextView) findViewById(R.id.messages_view);
+        StringBuilder sb = new StringBuilder();
+        for(String s: messages){
+            sb.append(s + "\n");
+        }
+        t.setText(sb.toString());
     }
 
     public void saveMessage(View v) {
