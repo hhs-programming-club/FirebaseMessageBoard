@@ -47,4 +47,18 @@
         android:layout_below="@+id/messageField"
         android:layout_alignParentStart="true" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/postBtn"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/messages_view"/>
+    </ScrollView>
+
 </RelativeLayout>
